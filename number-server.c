@@ -41,7 +41,7 @@ void handle_response(char *request, int client_sock) {
 	char str[50] = "Your number is ";
 	char num_str[10];
 
-	sprintf(num_str, "%d", num);
+	sprintf(num_str, "%d\n", num);
 	strcat(str, num_str);
 
 	write(client_sock, str, strlen(str));
@@ -55,9 +55,25 @@ void handle_response(char *request, int client_sock) {
 	char str[50] = "Incremented! Your new number is ";
 	char num_str[10];
 
-	sprintf(num_str, "%d", num);
+	sprintf(num_str, "%d\n", num);
 	strcat(str, num_str);
 
+	write(client_sock, str, strlen(str));
+    }
+    else if (strstr(path,"/add?value=") != NULL)
+    {
+	int value = 0;
+	sscanf(path, "/add?value=%d", &value);
+
+	num += value;
+
+	char str[50] = "Added! Your new number is ";
+	char num_str[10];
+
+	sprintf(num_str, "%d\n", num);
+	strcat(str, num_str);
+
+	write(client_sock, HTTP_200_FOUND, strlen(HTTP_200_FOUND));
 	write(client_sock, str, strlen(str));
     }
     else
